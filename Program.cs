@@ -6,6 +6,10 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
+builder.Services.AddCors(opt => opt.AddPolicy("AllowAll", opt =>
+   opt.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin()
+));
+
 var configuration = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<AppDbContext>(opt => opt.UseSqlServer(configuration));
 
@@ -24,6 +28,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseCors("AllowAll");
 
 app.UseHttpsRedirection();
 
